@@ -1,5 +1,7 @@
 import hashlib
 
+from ..logging import *
+
 from storage import Storage
 
 class SearchHistory(Storage):
@@ -31,7 +33,14 @@ class SearchHistory(Storage):
 
     def _make_id(self, search_text):
         m = hashlib.md5()
-        m.update(search_text.encode('utf-8'))
+        if(search_text.__class__.__name__ == 'unicode'):
+#           log_error("search_history - search of history item - unicode string to utf-8")
+           m.update(search_text.encode('utf-8'))
+        else:
+#           log_error("search_history - new search item - utf-8 str to utf-8 unicode")
+           m.update(unicode(search_text.decode('utf-8')).encode('utf-8'))
+           pass
+
         return m.hexdigest()
 
     def remove(self, search_text):

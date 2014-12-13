@@ -8,7 +8,14 @@ class BaseItem(object):
 
     def __init__(self, name, uri, image=u'', fanart=u''):
         self._version = BaseItem.VERSION
-        self._name = unicode(name)
+
+        if(name.__class__.__name__ == 'unicode'):
+           self._name = name.encode('utf-8')
+        else:
+           self._name = unicode(name.decode('utf-8')).encode('utf-8')
+           pass
+
+
         self._uri = unicode(uri)
         self._image = image
         self._fanart = fanart

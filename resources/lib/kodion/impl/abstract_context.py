@@ -99,8 +99,15 @@ class AbstractContext(object):
 
             # encode in utf-8
             for param in uri_params:
-                uri_params[param] = unicode(params[param]).encode('utf-8')
-                pass
+                 if(params[param].__class__.__name__ == 'unicode'):
+#                     log_error("abstract_context - encode unicode to utf-8")
+                     uri_params[param] = params[param].encode('utf-8')
+                 else:
+#                     log_error("abstract_context - utf-8 str to utf-8 unicode")
+                     uri_params[param] = unicode(params[param].decode('utf-8')).encode('utf-8')
+                     pass
+
+                 pass
             uri += '?' + urllib.urlencode(uri_params)
             pass
 
